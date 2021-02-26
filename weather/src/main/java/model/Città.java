@@ -1,38 +1,35 @@
 package model;
-
+import java.util.Vector;
 public class Città {
-	private int id;
+	
 	private String name;
 	private double lat;
 	private double lon;
 	private String country;
-	
+	Vector <Weather> previsioni= new Vector<Weather>();
+	public Città() {};
 	public Città(int id, String name, double lat,double lon,String contry) {
-		setId(id);
+		
 		setName(name);
 		setLat(lat);
 		setLon(lon);
 		setCountry(country);
 		
 	}
-	private void setId(int id) {
-		this.id=id;
-	}
-	private void setName(String name) {
+	
+	public void setName(String name) {
 		this.name=name;
 	}
-	private void setLat(double lat) {
+	public void setLat(double lat) {
 		this.lat=lat;
 	}
-	private void setLon(double lon) {
+	public void setLon(double lon) {
 		this.lon=lon;
 	}
-	private void setCountry(String country) {
+	public void setCountry(String country) {
 		this.country=country;
 	}
-	public int getId() {
-		return id;
-	}
+	
 	public String getName() {
 		return name;
 	}

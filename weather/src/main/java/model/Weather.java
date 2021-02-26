@@ -9,32 +9,38 @@ public class Weather {
 	private double max;
 	private double humidity;
 	private double pressure;
-	public Weather (String main, String description, double min, double max, double humidity, double pressure) {
+	private int visibility;
+	public Weather() {};
+	public Weather (String main, String description, double min, double max, double humidity, double pressure,int visibility) {
 		setMain(main);
 		setDescription(description);
 		setMin(min);
 		setMax(max);
 		setHumidity(humidity);
 		setPressure(pressure);
+		setVisibility(visibility);
 		
 	}
-	private void setMain(String main) {
+	public void setMain(String main) {
 		this.main=main;
 	}
-	private void setDescription(String descrption) {
+	public void setDescription(String description) {
 		this.description=description;
 	}
-	private void setMin(double min) {
+	public void setMin(double min) {
 		this.min=min;
 	}
-	private void setMax(double max) {
+	public void setMax(double max) {
 		this.max=max;
 	}
-	private void setHumidity(double humidity) {
+	public void setHumidity(double humidity) {
 		this.humidity=humidity;
 	}
-	private void setPressure(double pressure) {
+	public void setPressure(double pressure) {
 		this.pressure=pressure;
+	}
+	public void setVisibility(int visibility) {
+		this.visibility=visibility;
 	}
 	public String getMain() {
 		return main;
@@ -53,5 +59,8 @@ public class Weather {
     }
     public double getPressure() {
     	return pressure;
+    }
+    public int getVisibility() {
+    	return visibility;
     }
 }
