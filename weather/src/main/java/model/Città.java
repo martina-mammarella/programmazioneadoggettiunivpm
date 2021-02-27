@@ -6,14 +6,25 @@ public class Città {
 	private double lat;
 	private double lon;
 	private String country;
-	Vector <Weather> previsioni= new Vector<Weather>();
+	private Vector <Wind> vento= new Vector<Wind>();
+	private Vector <Weather> previsioni= new Vector<Weather>();
 	public Città() {};
-	public Città(int id, String name, double lat,double lon,String contry) {
+	public Città(Città x) {
+		name=x.getName();
+		lat=x.getLat();
+		lon=x.getLon();
+		country=x.getCountry();
+		vento=x.getWind();
+		previsioni=x.getWeather();
+	}
+	public Città(int id, String name, double lat,double lon,String contry,Vector<Weather>previsioni, Vector<Wind>vento) {
 		
 		setName(name);
 		setLat(lat);
 		setLon(lon);
 		setCountry(country);
+		setWeather(previsioni);
+		setWind(vento);
 		
 	}
 	
@@ -29,6 +40,18 @@ public class Città {
 	public void setCountry(String country) {
 		this.country=country;
 	}
+	public void setWeather(Vector<Weather>prev) {
+		
+		for(int i=0;i<prev.size();i++) {
+			previsioni.add(prev.get(i));
+			
+		}
+	}
+	public void setWind(Vector<Wind>venti) {
+		for(int i=0;i<venti.size();i++) {
+			vento.add(venti.get(i));
+		}
+	}
 	
 	public String getName() {
 		return name;
@@ -42,7 +65,12 @@ public class Città {
 	public String getCountry() {
 		return country;
 	}
-	
+	public Vector<Weather> getWeather(){
+		return previsioni;
+	}
+	public Vector<Wind>getWind(){
+		return vento;
+	}
 	
 
 }

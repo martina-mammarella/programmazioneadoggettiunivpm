@@ -1,10 +1,11 @@
 package service;
-import model.*;
 import model.Wind;
+import model.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import java.lang.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Vector;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.JSONArray;
@@ -24,24 +26,32 @@ public class Download{
 	public JSONObject downloadDati(String cityName) {
 		JSONObject stats=null;
 		JSONParser parser= new JSONParser();
-    try {
-    	String url="http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid="+apiKey;
-    	URL oracle = new URL(url);
-		HttpsURLConnection yc=(HttpsURLConnection)oracle.openConnection();
-		yc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1;WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-		BufferedReader in= new BufferedReader( new InputStreamReader(yc.getInputStream()));
-		String input;
-		while((input=in.readLine())!=null) {
-			 stats=(JSONObject) parser.parse(input);
-		}
-		in.close();
-}
-catch(Exception e) {
-	System.out.println("errore generico");
-}
-    return stats;
+		try {String url= "http://api.openweathermap.org/data/2.5/forecast?q=Milano&appid=91f3a6c712ed1b7232015700aecf9b80";
+        URLConnection openConnection= new URL(url).openConnection();
+		InputStream in=openConnection.getInputStream();
+	    String line="";
+	    try {
+	    	InputStreamReader inR= new InputStreamReader(in);
+	    	BufferedReader buf= new BufferedReader(inR);
+	    	while((line=buf.readLine())!=null){
+	    		 stats=(JSONObject) parser.parse(line);
+			}
+			in.close();
+	}
+	catch(Exception e) {
+		System.out.println("errore generico1");
+	}
+	  
+	}
+	    
+	    catch(Exception e ) {
+	    	System.out.println("errore2");
+	    }
+		return stats;
+	      }
 
-}
+
+	    
 	//metodo per salvare info città specificata
 	public Città downloadCity(String cityName) {
 		JSONObject chiamata= downloadDati(cityName);
@@ -58,23 +68,24 @@ catch(Exception e) {
 		
 	}
 	//metodo per salvare venti
-	public <Wind>Vector downloadWind(String cityName) {
-		
+	public void downloadWind(String cityName) {
+	    Città city= new Città(downloadCity(cityName));
 		JSONObject chiamata=downloadDati(cityName);
 		JSONArray a=(JSONArray)chiamata.get("list");
 		Vector<Wind>venti = new Vector<Wind>();
 		for(Object o:a) {
-		JSONObject x=(JSONObject) o;
+	    JSONObject x=(JSONObject) o;
+	    JSONObject xx=(JSONObject) x.get("wind");
 		Wind v= new Wind();
 		v.setSpeed((double)xx.get("speed"));
-		v.setDeg((double)xx.get("deg"));
-		venti.add(v);
-		
-		
-	}
-		return venti; }
-	//metodo per salvare previsioni
-	public Vector<Weather> downloadWeather(String cityName){
+	    v.setDeg((double)xx.get("deg"));
+	    venti.add(v);
+		}
+		city.setWind(venti);
+		 }
+	//metodo per salvare previsioni  della  città
+	public void downloadWeather(String cityName){
+		Città city=new Città(downloadCity(cityName));
 		JSONObject chiamata=downloadDati(cityName);
 		JSONArray a =(JSONArray)chiamata.get("list");
 		Vector<Weather> previsioni = new Vector<Weather>();
@@ -88,49 +99,15 @@ catch(Exception e) {
 			p.setMin((double)x2.get("temp_min"));
 			p.setMax((double)x2.get("temp_max"));
 			for(Object ob:a1) {
-				p.setDescription("main");
-				p.setDescription("description");
+				JSONObject ob1= (JSONObject)ob;
+				p.setDescription((String)ob1.get("main"));
+				p.setDescription((String)ob1.get("description"));
 			}
 			previsioni.add(p);
 			
 		}
+		city.setWeather(previsioni);
 		
-		return previsioni;
 		
 	}
-	public void downloadOra(String cityName) {
-		String path = System.getProperty("user.dir") + "/" + cityName + "Ore.txt";
-		File fileDati=new File(path);
-		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-		scheduler.scheduleAtFixedRate(new Runnable() {
-			 public void run() {
-			    	
-			    	JSONArray prev = new JSONArray();
-			    	//prev = downloadDati(cityName);
-			    	
-			    //prevsionimeteoattuali	nowJSONObject actualvisibility = new JSONObject();
-			    	//actualvisibility = visibility.getJSONObject(0);
-
-			    			try{
-			    			    if(!fileDati.exists()) {
-			    			        fileDati.createNewFile();
-			    			    }
-
-			    			    FileWriter fileWriter = new FileWriter(fileDati, true);
-			    				
-			    				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			    			    bufferedWriter.write(now.toString());
-			    			    bufferedWriter.write("\n");
-			    			    
-			    			    bufferedWriter.close();
-			    			    
-			    			} catch(Exception e) {
-			    			    System.out.println(e);
-			    			}
-			    	
-			    }
-			}, 0, 3, TimeUnit.HOURS);
 	}
-	
-
-}
