@@ -1,4 +1,5 @@
 package stats;
+import model.Città;
 import java.util.Vector;
 import org.json.simple.JSONObject;
 import model.Weather;
@@ -8,7 +9,8 @@ public class StatsMax extends Stats{
 	
 		 JSONObject ob= new JSONObject();
 		 Download x= new Download();
-			Vector<Weather> p=x.downloadWeather(cityName);
+		 Città a= x.download(cityName);
+			Vector<Weather> p=a.getWeather();
 			double j=0;
 			double max=0;
 			for(Weather y:p) {

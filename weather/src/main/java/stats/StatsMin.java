@@ -1,5 +1,5 @@
 package stats;
-
+import model.Città;
 import java.util.Vector;
 
 import org.json.simple.JSONObject;
@@ -11,7 +11,8 @@ public class StatsMin {
 	 public JSONObject minimoGiornaliero(String cityName) {
 		 JSONObject ob= new JSONObject();
 		 Download x= new Download();
-			Vector<Weather> p=x.downloadWeather(cityName);
+		 Città a= x.download(cityName);
+			Vector<Weather> p=a.getWeather();
 			double j=0;
 			double min=0;
 			for(Weather y:p) {
@@ -37,4 +38,5 @@ public class StatsMin {
 	 //minimotregiorni
 
 	}
-}
+
+

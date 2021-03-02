@@ -2,7 +2,7 @@ package model;
 
 public class Weather {
 
-
+    private double temperature;
 	private String main;
 	private String description;
 	private double min;
@@ -10,8 +10,10 @@ public class Weather {
 	private double humidity;
 	private double pressure;
 	private int visibility;
+	private String date;
 	public Weather() {};
-	public Weather (String main, String description, double min, double max, double humidity, double pressure,int visibility) {
+	public Weather (double temperature,String main, String description, double min, double max, double humidity, double pressure,int visibility,String date) {
+		setTemperature(temperature);
 		setMain(main);
 		setDescription(description);
 		setMin(min);
@@ -19,7 +21,11 @@ public class Weather {
 		setHumidity(humidity);
 		setPressure(pressure);
 		setVisibility(visibility);
+		setDate(date);
 		
+	}
+	public void setTemperature(double temperature) {
+		this.temperature=temperature;
 	}
 	public void setMain(String main) {
 		this.main=main;
@@ -42,8 +48,14 @@ public class Weather {
 	public void setVisibility(int visibility) {
 		this.visibility=visibility;
 	}
+	public void setDate(String date) {
+		this.date=date;
+	}
 	public String getMain() {
 		return main;
+	}
+	public double getTemperature() {
+		return temperature;
 	}
 	public String getDescription() {
 		return description;
@@ -63,4 +75,8 @@ public class Weather {
     public int getVisibility() {
     	return visibility;
     }
+    public String getDate() {
+    	return date;
+    }
+   
 }

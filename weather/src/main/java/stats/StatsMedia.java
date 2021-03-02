@@ -9,7 +9,8 @@ import java.text.SimpleDateFormat;
 public class StatsMedia extends Stats {
 public JSONObject mediaGiornaliera(String cityName) {
 	Download x= new Download();
-	Vector<Weather> p=x.downloadWeather(cityName);
+	Città a= x.download(cityName);
+	Vector<Weather> p=a.getWeather();
 	double t=0;
 	int i=0;
 	double media=0;
@@ -26,10 +27,9 @@ public JSONObject mediaGiornaliera(String cityName) {
 	return ob;
 	
 }
-public JSONObject mediaSettimana(String cityName) {
+//public JSONObject mediaSettimana(String cityName) {
 	//accesso dati salvati
 }
-public JSONObject mediaTreGiorni(String cityName) {
+//public JSONObject mediaTreGiorni(String cityName) {
 	//accesso dati salvati
-}
-}
+
